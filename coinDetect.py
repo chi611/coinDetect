@@ -1,5 +1,21 @@
 import cv2
 import numpy as np
+import pickle
+# 模型檔路徑
+model_filename = 'D:/school/embedded/data/svm_model.pkl'
+with open(model_filename, 'rb') as file:
+    loaded_model = pickle.load(file)
+
+# 預測硬幣圖像
+def predict_coin(image):
+    r_channel = list(image[:, :, 2].reshape(-1))  # 提取R通道
+    g_channel = list(image[:, :, 1].reshape(-1))  # 提取G通道
+    b_channel = list(image[:, :, 0].reshape(-1))  # 提取B通道
+    rgb = r_channel+g_channel+b_channel    
+    predicted_label = loaded_model.predict([rgb])
+
+    return predicted_label
+
 # 邊緣檢測
 def sobelEdgeDetection(f):
     grad_x = cv2.Sobel(f, cv2.CV_32F, 1, 0, ksize = 3)
@@ -65,17 +81,45 @@ def coinDetect(img):
     return result
 
 
-filename = "D:/school/embedded/image/input4.png"
+filename = "D:/school/embedded/image/input11.png"
 img = cv2.imread(filename)
 img = cv2.resize(img,(1080,720))
+img_ori = img.copy()
 cv2.imshow('img', img)
 result = coinDetect(img)
-
+cv2.imshow('coinDetect', result)
 cnts,hierarchy=cv2.findContours(result, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2:]
+coinAmount = [0, 0, 0, 0] #硬幣數量(list[0]: 50元數量、list[1]: 10元數量、list[2]: 5元數量、list[3]: 1元數量
+total = 0
 for cnt in cnts:
+    area = cv2.contourArea(cnt)
+    if area <= 500:continue
     (x, y, w, h) = cv2.boundingRect(cnt)
     cv2.circle(img, (int(x + w / 2), int(y + h / 2)), int((w + h) / 4), (0,0,255), 2)
-cv2.imshow('result', img)
+    img_pic = img_ori[y-20:y+h+20,x-20:x+w+20]
+    # (x, y, w, h) = str(x), str(y), str(w), str(h)
+    # cv2.imwrite('D:/school/embedded/data/' + x + y + w + h +'.png',img_pic)
 
+    img_pic = cv2.resize(img_pic,(45,45))
+    predicted_label = predict_coin(img_pic)
+    if predicted_label == 11 or predicted_label == 12:
+        cv2.putText(img, '1NT$', (x, y), cv2.FONT_HERSHEY_SIMPLEX,  1.3, (255, 0, 0), 3, cv2.LINE_AA)
+        coinAmount[3] += 1
+        total += 1
+    elif predicted_label == 51 or predicted_label == 52:
+        cv2.putText(img, '5NT$', (x, y), cv2.FONT_HERSHEY_SIMPLEX,  1.3, (255, 0, 0), 3, cv2.LINE_AA)        
+        coinAmount[2] += 1
+        total += 5
+    elif predicted_label == 101 or predicted_label == 102 or predicted_label == 103:
+        cv2.putText(img, '10NT$', (x, y), cv2.FONT_HERSHEY_SIMPLEX,  1.3, (255, 0, 0), 3, cv2.LINE_AA)  
+        coinAmount[1] += 1
+        total += 10
+    elif predicted_label == 501 or predicted_label == 502:
+        cv2.putText(img, '50NT$', (x, y), cv2.FONT_HERSHEY_SIMPLEX,  1.3, (255, 0, 0), 3, cv2.LINE_AA)            
+        coinAmount[0] += 1
+        total += 50
+
+print('總金額：',total)
+cv2.imshow('result', img)
 cv2.waitKey()
 cv2.destroyAllWindows()

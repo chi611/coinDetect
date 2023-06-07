@@ -20,6 +20,6 @@
 ![image](https://github.com/chi611/coinDetect/assets/76472326/c25bcf3e-6c3d-4411-926d-75ce1065241d)
 ![image](https://github.com/chi611/coinDetect/assets/76472326/c4cadd2d-bbd5-40a4-a8d9-6ea268867a90)
 ![image](https://github.com/chi611/coinDetect/assets/76472326/b9ad0f75-d898-4b66-8f17-07da7f5c685e)
-![image](https://github.com/chi611/coinDetect/assets/76472326/12b10d96-16a7-42b9-ba11-df23c3bccaa1)
+![image](https://github.com/chi611/coinDetect/assets/76472326/77865557-c3ca-46df-bc3e-70cce8d175c3)
 ![image](https://github.com/chi611/coinDetect/assets/76472326/7147673c-4d1e-4ec9-bee3-6a53f9f61cc0)
 ![image](https://github.com/chi611/coinDetect/assets/76472326/0e740bdc-08ec-47a1-aa63-1c18f55113af)

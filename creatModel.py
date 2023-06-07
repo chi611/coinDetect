@@ -7,7 +7,7 @@ import numpy as np
 folder_path = 'D:/school/embedded/data/coinData'
 
 # CSV檔案路徑
-csv_file_path = 'D:/school/embedded/data/trainingModle.csv'
+csv_file_path = 'D:/school/embedded/data/trainingModel.csv'
 
 # 擷取所有影像的RGB像素值並寫入CSV檔案
 with open(csv_file_path, 'w', newline='') as csvfile:

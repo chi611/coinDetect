@@ -7,7 +7,7 @@ from sklearn.model_selection import train_test_split
 import pickle
 
 # 讀取CSV檔案
-df = pd.read_csv('D:/school/embedded/data/trainingModle.csv')
+df = pd.read_csv('D:/school/embedded/data/trainingModel.csv')
 X = list(map(eval, df.iloc[:, -2]))
 y = df.iloc[:, -1].to_list()
 
